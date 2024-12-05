@@ -36,9 +36,11 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;
             ClientSize = new Size(714, 478);
+            DoubleBuffered = true;
             Name = "Form1";
             Text = "Form1";
             Load += Form1_Load;
+            KeyDown += Form1_KeyDown;
             ResumeLayout(false);
         }
 
