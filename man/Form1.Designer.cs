@@ -38,7 +38,7 @@
             ClientSize = new Size(714, 478);
             DoubleBuffered = true;
             Name = "Form1";
-            Text = "Form1";
+            Text = "Score: 0";
             Load += Form1_Load;
             KeyDown += Form1_KeyDown;
             ResumeLayout(false);

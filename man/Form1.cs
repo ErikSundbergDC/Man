@@ -4,14 +4,15 @@ namespace man
     {
         int manX = 1;
         int manY = 1;
+        int score = 0;
         int[,] level1 = {{1,1,1,1,1,1,1,1,1,1,1},
-                         {1,2,0,0,0,0,0,0,0,0,1},
-                         {1,0,1,1,1,0,1,1,1,0,1},
-                         {1,0,1,0,0,0,0,0,1,0,1},
-                         {1,0,0,0,1,1,1,0,0,0,1},
-                         {1,0,1,0,0,0,0,0,1,0,1},
-                         {1,0,1,1,1,0,1,1,1,0,1},
-                         {1,0,0,0,0,0,0,0,0,0,1},
+                         {1,2,3,3,3,3,3,3,3,3,1},
+                         {1,3,1,1,1,3,1,1,1,3,1},
+                         {1,3,1,3,3,3,3,3,1,3,1},
+                         {1,3,3,3,1,1,1,3,3,3,1},
+                         {1,3,1,3,3,3,3,3,1,3,1},
+                         {1,3,1,1,1,3,1,1,1,3,1},
+                         {1,3,3,3,3,3,3,3,3,3,1},
                          {1,1,1,1,1,1,1,1,1,1,1}};
         public Form1()
         {
@@ -44,38 +45,58 @@ namespace man
                         g.FillEllipse(brush, i * 32, j * 32, 32, 32);
 
                     }
+                    else if (level1[j, i] == 3)
+                    {
+                        SolidBrush brush = new SolidBrush(Color.White);
+                        g.FillEllipse(brush, i * 32 + 8, j * 32 + 8, 16, 16);
+
+                    }
                 }
             }
+
+            Text = "Score: " + score;
 
             base.OnPaint(e);
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            level1[manY, manX] = 0;
             if (e.KeyCode == Keys.Right)
             {
-                level1[manY, manX] = 0;
-                manX++;
-                level1[manY, manX] = 2;
+                if (level1[manY, manX + 1] != 1)
+                {
+                    manX++;
+                }
+                
             }
             else if (e.KeyCode == Keys.Left)
             {
-                level1[manY, manX] = 0;
-                manX--;
-                level1[manY, manX] = 2;
+                if (level1[manY, manX - 1] != 1)
+                {
+                    manX--;
+                }
             }
             else if (e.KeyCode == Keys.Up)
             {
-                level1[manY, manX] = 0;
-                manY--;
-                level1[manY, manX] = 2;
+                if (level1[manY-1, manX] != 1)
+                {
+                    manY--;
+                }
             }
             else if (e.KeyCode == Keys.Down)
             {
-                level1[manY, manX] = 0;
-                manY++;
-                level1[manY, manX] = 2;
+                if (level1[manY + 1, manX] != 1)
+                {
+                    manY++;
+                }
             }
+            if (level1[manY, manX] == 3)
+            {
+                score++;
+            }
+            level1[manY, manX] = 2;
+
             Refresh();
         }
     }
