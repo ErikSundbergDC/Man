@@ -8,6 +8,7 @@ namespace man
         int ghostX = 3;
         int ghostY = 4;
         int score = 0;
+        int underGhost = 3;
         int[,] level1 = {{1,1,1,1,1,1,1,1,1,1,1},
                          {1,2,3,3,3,3,3,3,3,3,1},
                          {1,3,1,1,1,3,1,1,1,3,1},
@@ -103,15 +104,63 @@ namespace man
             {
                 score++;
             }
+            bool willDie = false;
+            if (level1[manY, manX] == 4)
+            {
+                willDie = true;
+            }
             level1[manY, manX] = 2;
 
             Refresh();
+            if(willDie)
+            {
+                die();
+            }
         }
 
+        private int RandomGhostDirection()
+        {
+            int direction = -1;
+            bool valid = false;
+            while (valid == false)
+            {
+                direction = random.Next(4);
+
+                if (direction == 0)
+                {
+                    if (level1[ghostY-1, ghostX] != 1)
+                    {
+                        valid = true;
+                    }
+                }
+                else if (direction == 1)
+                {
+                    if (level1[ghostY, ghostX - 1] != 1)
+                    {
+                        valid = true;
+                    }
+                }
+                else if (direction == 2)
+                {
+                    if (level1[ghostY, ghostX + 1] != 1)
+                    {
+                        valid = true;
+                    }
+                }
+                else if (direction == 3)
+                {
+                    if(level1[ghostY + 1, ghostX] != 1)
+                    {
+                        valid = true;
+                    }
+                }
+            }
+            return direction;
+        }
         private void timer1_Tick(object sender, EventArgs e)
         {
-            int direction = random.Next(4);
-            level1[ghostY, ghostX] = 0;
+            int direction = RandomGhostDirection();
+            level1[ghostY, ghostX] = underGhost;
             if(direction==0)
             {
                 ghostY--;
@@ -128,9 +177,20 @@ namespace man
             {
                 ghostY++;
             }
-           
+            underGhost = level1[ghostY, ghostX];
             level1[ghostY, ghostX] = 4;
             Refresh();
+            if (underGhost == 2)
+            {
+                die();
+            }
+        }
+
+        void die()
+        {
+            timer1.Enabled = false;
+            MessageBox.Show("Game Over!");
+            Application.Exit();
         }
     }
 }
